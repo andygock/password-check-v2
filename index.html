@@ -111,6 +111,7 @@
             id="password"
             placeholder="Enter your password"
             required
+            autofocus
           />
           <button type="submit">Check</button>
         </form>
@@ -168,7 +169,19 @@
             )}`;
             status.innerText += `\nFetching data from ${url}`;
 
-            const response = await fetch(url);
+            const response = await fetch(url, {
+              headers: {
+                "Add-Padding": "true",
+              },
+            });
+
+            // if response not 200, throw error
+            if (!response.ok) {
+              throw new Error(
+                `API request failed with status ${response.status}`
+              );
+            }
+
             const data = await response.text();
 
             // status.innerText += `\nIt responded with ${data.length} lines.`;
